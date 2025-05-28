@@ -17,4 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/siswa', function () {
+    return view('siswa.tambah_siswa');
+});
+
+Route::get('/siswaedit', function () {
+    return view('siswa.edit_siswa');
+});
+
 require __DIR__.'/auth.php';
