@@ -10,7 +10,7 @@
             <div class="bg-base-100 shadow-xl rounded-box p-6">
 
                 <div class="mb-6 flex justify-between items-center">
-                    <a href="/siswa" class="btn btn-primary">
+                    <a href="{{ route('siswa.create') }}" class="btn btn-primary flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
                             fill="currentColor">
                             <path fill-rule="evenodd"
@@ -21,22 +21,28 @@
                     </a>
                 </div>
 
-                <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <input type="text" placeholder="Cari nama siswa..."
-                        class="input input-bordered w-full col-span-1 md:col-span-3" />
-                    <select class="select select-bordered w-full">
-                        <option disabled selected>Filter Tingkat</option>
-                        <option>Sekolah</option>
-                        <option>Kecamatan</option>
-                        <option>Kabupaten</option>
-                        <option>Provinsi</option>
-                        <option>Nasional</option>
-                        <option>Internasional</option>
-                    </select>
-                </div>
+                <form method="GET" action="{{ route('siswa.index') }}"
+                    class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Cari nama siswa..." class="input input-bordered input-sm w-full md:col-span-2" />
+                    <div class="flex space-x-2 justify-end items-center md:col-span-2">
+                        <select name="filter_tingkat" class="select select-bordered input-sm w-48">
+                            <option disabled {{ request('filter_tingkat') ? '' : 'selected' }}>Filter Tingkat</option>
+                            @foreach (['Sekolah', 'Kecamatan', 'Kabupaten', 'Provinsi', 'Nasional', 'Internasional'] as $tingkat)
+                                <option value="{{ $tingkat }}"
+                                    {{ request('filter_tingkat') == $tingkat ? 'selected' : '' }}>
+                                    {{ $tingkat }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                        <a href="{{ route('siswa.index') }}" class="btn btn-outline btn-secondary btn-sm">Reset</a>
+                    </div>
+                </form>
+
 
                 <div class="overflow-x-auto">
-                    <table class="table table-zebra">
+                    <table class="table table-zebra w-full">
                         <thead class="bg-base-200">
                             <tr>
                                 <th>No</th>
@@ -48,91 +54,71 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Siswa 1 -->
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <div class="flex items-center space-x-3">
-                                        <div class="avatar">
-                                            <div class="w-10 rounded-full">
-                                                <img src="https://randomuser.me/api/portraits/boys/1.jpg" />
+                            @forelse ($siswas as $index => $siswa)
+                                <tr>
+                                    <td>{{ $siswas->firstItem() + $index }}</td>
+                                    <td>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="avatar">
+                                                <div class="w-10 rounded-full">
+                                                    <img src="{{ $siswa->foto ? asset('storage/' . $siswa->foto) : 'https://ui-avatars.com/api/?name=' . urlencode($siswa->nama) }}"
+                                                        alt="Foto {{ $siswa->nama }}" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">{{ $siswa->nama }}</div>
+                                                <div class="text-sm opacity-50">{{ $siswa->kelas }} |
+                                                    {{ $siswa->tahun }}</div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <div class="font-bold">Andi Wijaya</div>
-                                            <div class="text-sm opacity-50">XII IPA 1 | 2023</div>
+                                    </td>
+                                    <td>{{ $siswa->kelas }}</td>
+                                    <td>
+                                        <div class="font-semibold">{{ $siswa->prestasi }}</div>
+                                        <div class="text-sm text-gray-500">{{ $siswa->tingkat }}</div>
+                                    </td>
+                                    <td>
+                                        @if ($siswa->sertifikat)
+                                            <a href="{{ asset('storage/' . $siswa->sertifikat) }}" target="_blank"
+                                                class="btn btn-sm btn-outline btn-info">
+                                                Lihat Sertifikat
+                                            </a>
+                                        @else
+                                            <span class="text-gray-400 italic">Belum diupload</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <a href="{{ route('siswa.edit', $siswa->id) }}"
+                                                class="btn btn-sm btn-outline btn-warning">Edit</a>
+                                            <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin hapus data?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-outline btn-error">Hapus</button>
+                                            </form>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>XII IPA 1</td>
-                                <td>
-                                    <div class="font-semibold">Juara 1 Olimpiade Matematika</div>
-                                    <div class="text-sm text-gray-500">Nasional</div>
-                                </td>
-                                <td>
-                                    <a href="/certificates/sample.pdf" target="_blank"
-                                        class="btn btn-sm btn-outline btn-info">
-                                        Lihat Sertifikat
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="flex space-x-1">
-                                        <a href="/siswaedit" class="btn btn-sm btn-outline btn-warning">
-                                            Edit
-                                        </a>
-                                        <button class="btn btn-sm btn-outline btn-error">
-                                            Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Siswa 2 -->
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <div class="flex items-center space-x-3">
-                                        <div class="avatar">
-                                            <div class="w-10 rounded-full">
-                                                <img src="https://randomuser.me/api/portraits/girls/2.jpg" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="font-bold">Budi Lestari</div>
-                                            <div class="text-sm opacity-50">XI IPS 2 | 2022</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>XI IPS 2</td>
-                                <td>
-                                    <div class="font-semibold">Juara 2 Lomba Debat Bahasa Inggris</div>
-                                    <div class="text-sm text-gray-500">Provinsi</div>
-                                </td>
-                                <td><span class="text-gray-400 italic">Belum diupload</span></td>
-                                <td>
-                                    <div class="flex space-x-1">
-                                        <a href="#" class="btn btn-sm btn-outline btn-warning">Edit</a>
-                                        <button class="btn btn-sm btn-outline btn-error">Hapus</button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-gray-500 italic">Data siswa tidak
+                                        ditemukan.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
                 <div class="mt-6 flex flex-col items-center justify-center">
                     <div class="text-sm text-gray-500 text-center">
-                        Menampilkan <span class="font-medium">1</span> sampai <span class="font-medium">2</span> dari
-                        <span class="font-medium">5</span> entri
+                        Menampilkan <span class="font-medium">{{ $siswas->firstItem() ?? 0 }}</span> sampai
+                        <span class="font-medium">{{ $siswas->lastItem() ?? 0 }}</span> dari
+                        <span class="font-medium">{{ $siswas->total() }}</span> entri
                     </div>
-                    <div class="mt-2 join">
-                        <button class="join-item btn">«</button>
-                        <button class="join-item btn btn-active">1</button>
-                        <button class="join-item btn">2</button>
-                        <button class="join-item btn btn-disabled">...</button>
-                        <button class="join-item btn">99</button>
-                        <button class="join-item btn">100</button>
-                        <button class="join-item btn">»</button>
+                    <div class="mt-2">
+                        {{ $siswas->links() }}
                     </div>
                 </div>
 

@@ -10,8 +10,9 @@
             <div class="card bg-base-100 shadow-xl">
                 <div class="card-body">
 
-                    <form>
-                        <!-- Data Pribadi -->
+                    <form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         <h3 class="card-title border-b pb-2 mb-6 font-semibold text-lg">Data Pribadi Siswa</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -145,7 +146,9 @@
                                 <label class="label">
                                     <span class="label-text">Sertifikat Prestasi</span>
                                 </label>
-                                <a href="#" class="link link-primary flex items-center mb-2">
+                                <a href="{{ asset('storage/' . $siswa->sertifikat) }}"
+                                    class="link link-primary flex items-center mb-2" target="_blank">
+
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
@@ -163,7 +166,7 @@
 
                         <!-- Tombol Aksi -->
                         <div class="flex justify-end space-x-4 border-t pt-4">
-                            <a href="dashboard" class="btn btn-outline btn-error">Batal</a>
+                            <a href= "{{ route('dashboard') }}" class="btn btn-outline btn-error">Batal</a>
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </div>
 

@@ -8,7 +8,7 @@
     <div class="py-10">
         <div class="max-w-6xl mx-auto px-4">
             <div class="bg-base-100 shadow-lg rounded-xl p-8 space-y-10">
-                <form method="POST" enctype="multipart/form-data">
+                <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div>

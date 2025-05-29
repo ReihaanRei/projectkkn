@@ -6,7 +6,10 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <div class="w-12 h-12">
+                        <img src="{{ asset('images/logo-smkn5.png') }}" alt="Logo SMKN 5"
+                            class="h-full w-full object-contain" />
+                    </div>
                     </a>
                 </div>
 
@@ -41,6 +44,11 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('register')">
+                            {{ __('Tambah Admin') }}
+                        </x-dropdown-link>
+
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
