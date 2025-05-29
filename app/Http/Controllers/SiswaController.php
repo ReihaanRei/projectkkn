@@ -12,12 +12,10 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $query = Auth::user()->siswaBerprestasi();
-
-
+        
         if ($request->filled('search')) {
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
-
         
 
         if ($request->filled('filter_tingkat')) {
