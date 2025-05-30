@@ -2,25 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SiswaBerprestasi extends Model
 {
-    use HasFactory;
-
     protected $table = 'siswa_berprestasi';
 
     protected $fillable = [
         'user_id',
         'nama',
-        'kelas',
+        'nis',
+        'jenis_kelamin',
+        'jurusan',
         'tahun',
         'prestasi',
+        'pencapaian',
         'tingkat',
+        'deskripsi',
         'sertifikat',
         'foto',
     ];
+    
 
     public function user()
     {

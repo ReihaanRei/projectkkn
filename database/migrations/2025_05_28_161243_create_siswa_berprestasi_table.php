@@ -15,15 +15,19 @@ class CreateSiswaBerprestasiTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nama');
-            $table->string('kelas');
+            $table->string('nis');
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('jurusan');
             $table->year('tahun');
             $table->string('prestasi');
+            $table->string('pencapaian');
             $table->string('tingkat'); 
+            $table->text('deskripsi')->nullable();
             $table->string('sertifikat')->nullable(); 
             $table->string('foto')->nullable(); 
-
             $table->timestamps();
         });
+        
     }
 
     /**

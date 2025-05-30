@@ -9,15 +9,14 @@
                 <tr>
                     <th class="whitespace-nowrap">No</th>
                     <th class="whitespace-nowrap">Nama Siswa</th>
-                    <th class="whitespace-nowrap">Kelas</th>
+                    <th class="whitespace-nowrap">Jurusan</th>
                     <th class="whitespace-nowrap">Prestasi</th>
-                    <th class="whitespace-nowrap">Sertifikat</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($siswas as $index => $siswa)
                     <tr>
-                        <td class="whitespace-nowrap">{{ $index + 1 }}</td>
+                        <td>{{ $siswas->firstItem() + $index }}</td>
                         <td class="min-w-[360px]">
                             <div class="flex items-center gap-6">
                                 <div class="avatar">
@@ -27,25 +26,14 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">{{ $siswa->nama }}</div>
-                                    <div class="text-sm text-gray-500">{{ $siswa->kelas }} | {{ $siswa->tahun }}</div>
+                                    <div class="font-bold">{{ $siswa->nama }}</div> 
                                 </div>
                             </div>
                         </td>
-                        <td class="whitespace-nowrap">{{ $siswa->kelas }}</td>
+                        <td class="whitespace-nowrap">{{ $siswa->jurusan }}</td>
                         <td>
                             <div class="font-semibold">{{ $siswa->prestasi }}</div>
-                            <div class="text-sm text-gray-500">{{ $siswa->tingkat }}</div>
-                        </td>
-                        <td class="whitespace-nowrap">
-                            @if ($siswa->sertifikat)
-                                <a href="{{ asset('storage/' . $siswa->sertifikat) }}" target="_blank"
-                                    class="btn btn-sm btn-outline btn-info">
-                                    Lihat Sertifikat
-                                </a>
-                            @else
-                                <span class="italic text-gray-400">Belum diupload</span>
-                            @endif
+                            <div class="text-sm text-gray-500">{{ $siswa->tingkat }} | {{ $siswa->tahun }}</div>
                         </td>
                     </tr>
                 @empty
@@ -56,5 +44,15 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+    <div class="mt-6 flex flex-col items-center justify-center">
+        <div class="text-sm text-gray-500 text-center">
+            Menampilkan <span class="font-medium">{{ $siswas->firstItem() ?? 0 }}</span> sampai
+            <span class="font-medium">{{ $siswas->lastItem() ?? 0 }}</span> dari
+            <span class="font-medium">{{ $siswas->total() }}</span> entri
+        </div>
+        <div class="mt-2">
+            {{ $siswas->links() }}
+        </div>
     </div>
 </main>

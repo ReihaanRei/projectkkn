@@ -47,7 +47,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Siswa</th>
-                                <th>Kelas</th>
+                                <th>Jurusan</th>
                                 <th>Prestasi</th>
                                 <th>Sertifikat</th>
                                 <th>Aksi</th>
@@ -67,15 +67,13 @@
                                             </div>
                                             <div>
                                                 <div class="font-bold">{{ $siswa->nama }}</div>
-                                                <div class="text-sm opacity-50">{{ $siswa->kelas }} |
-                                                    {{ $siswa->tahun }}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $siswa->kelas }}</td>
+                                    <td>{{ $siswa->jurusan }}</td>
                                     <td>
                                         <div class="font-semibold">{{ $siswa->prestasi }}</div>
-                                        <div class="text-sm text-gray-500">{{ $siswa->tingkat }}</div>
+                                        <div class="text-sm text-gray-500">{{ $siswa->tingkat }} | {{ $siswa->tahun }}</div>
                                     </td>
                                     <td>
                                         @if ($siswa->sertifikat)

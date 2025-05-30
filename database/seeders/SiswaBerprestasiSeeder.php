@@ -10,33 +10,57 @@ class SiswaBerprestasiSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::first();
-
-        $data = [
-            [
-                'user_id' => $user->id,
-                'nama' => 'Budi Hartono',
-                'kelas' => 'XI IPS 2',
-                'tahun' => 2024,
-                'prestasi' => 'Juara 2 Lomba Cerdas Cermat',
-                'tingkat' => 'Provinsi',
-                'sertifikat' => null,
-                'foto' => null,
-            ],
-            [
-                'user_id' => $user->id,
-                'nama' => 'Siti Aminah',
-                'kelas' => 'X IPA 1',
-                'tahun' => 2023,
-                'prestasi' => 'Juara 1 Lomba Matematika',
-                'tingkat' => 'Kabupaten',
-                'sertifikat' => null,
-                'foto' => null,
-            ],
+        $jurusanList = [
+            'T. KIMIA INDUSTRI',
+            'KIMIA ANALISIS',
+            'T. INSTALASI TENAGA LISTRIK',
+            'T. FABRIKASI LOGAM DAN MANUFAKTUR',
+            'T. ELEKTRONIKA KOMUNIKASI',
+            'KONTRUKSI GEDUNG, SANITASI DAN PERAWATAN',
+            'T. SEPEDA MOTOR',
+            'T. KENDARAAN RINGAN',
+            'T. ALAT BERAT'
         ];
 
-        foreach ($data as $siswa) {
-            $user->siswaBerprestasi()->create($siswa);
+        $tingkatList = [
+            'Sekolah',
+            'Kecamatan',
+            'Kabupaten/Kota',
+            'Provinsi',
+            'Nasional',
+            'Internasional'
+        ];
+
+        $prestasiContoh = [
+            'Juara 1 Lomba Robotik',
+            'Juara 2 Desain Poster',
+            'Juara Harapan 1 LKS Elektronika',
+            'Finalis Kompetisi Sains Nasional',
+            'Pemenang Inovasi Teknologi',
+            'Juara 3 Lomba Cerdas Cermat',
+            'Delegasi Seminar Internasional',
+            'Lolos Seleksi Olimpiade Matematika',
+            'Juara Favorit Desain Website',
+            'Juara Umum Lomba Antar SMK'
+        ];
+
+        $userId = User::first()->id;
+
+        for ($i = 0; $i < 50; $i++) {
+            SiswaBerprestasi::create([
+                'user_id'       => $userId,
+                'nama'          => fake()->name(),
+                'nis'           => fake()->unique()->numerify('#######'),
+                'jenis_kelamin' => fake()->randomElement(['L', 'P']),
+                'jurusan'       => $jurusanList[array_rand($jurusanList)],
+                'tahun'         => fake()->numberBetween(2018, 2025),
+                'prestasi'      => $prestasiContoh[array_rand($prestasiContoh)],
+                'pencapaian'    => fake()->randomElement(['Juara 1', 'Juara 2', 'Finalis', 'Harapan 1']),
+                'tingkat'       => $tingkatList[array_rand($tingkatList)],
+                'deskripsi'     => fake()->sentence(10),
+                'sertifikat'    => null,
+                'foto'          => null,
+            ]);
         }
     }
 }

@@ -46,6 +46,6 @@ class User extends Authenticatable
     }
     public function siswaBerprestasi()
     {
-        return $this->hasMany(\App\Models\SiswaBerprestasi::class);
+        return $this->hasMany(SiswaBerprestasi::class);
     }
 }

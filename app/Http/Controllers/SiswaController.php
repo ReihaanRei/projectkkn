@@ -11,7 +11,7 @@ class SiswaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Auth::user()->siswaBerprestasi();
+        $query = Auth::user()->siswaBerprestasi()->orderBy('created_at', 'desc');
         
         if ($request->filled('search')) {
             $query->where('nama', 'like', '%' . $request->search . '%');
@@ -54,23 +54,37 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kelas' => 'required|string|max:255',
-            'tahun' => 'required|integer',
+            'nis' => 'required|string|max:50',
+            'jenis_kelamin' => 'required|in:L,P',
+            'jurusan' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:2099',
             'prestasi' => 'required|string|max:255',
+            'pencapaian' => 'required|string|max:100',
             'tingkat' => 'required|string|max:255',
-            'sertifikat' => 'nullable|file|mimes:pdf',
+            'deskripsi' => 'nullable|string',
+            'sertifikat' => 'nullable|file|mimes:pdf|max:2048',
             'foto' => 'nullable|image|max:2048',
         ]);
 
-        $sertifikatPath = $request->hasFile('sertifikat') ? $request->file('sertifikat')->store('sertifikat', 'public') : null;
-        $fotoPath = $request->hasFile('foto') ? $request->file('foto')->store('foto', 'public') : null;
+        $fotoPath = $request->file('foto') 
+            ? $request->file('foto')->store('foto', 'public') 
+            : null;
+
+        $sertifikatPath = $request->file('sertifikat') 
+            ? $request->file('sertifikat')->store('sertifikat', 'public') 
+            : null;
+
 
         Auth::user()->siswaBerprestasi()->create([
             'nama' => $request->nama,
-            'kelas' => $request->kelas,
+            'nis' => $request->nis,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'jurusan' => $request->jurusan,
             'tahun' => $request->tahun,
             'prestasi' => $request->prestasi,
+            'pencapaian' => $request->pencapaian,
             'tingkat' => $request->tingkat,
+            'deskripsi' => $request->deskripsi,
             'sertifikat' => $sertifikatPath,
             'foto' => $fotoPath,
         ]);
@@ -93,13 +107,11 @@ class SiswaController extends Controller
     {
         $siswa = SiswaBerprestasi::findOrFail($id);
 
-        if ($siswa->user_id !== Auth::id()) {
-            abort(403);
-        }
+        abort_if($siswa->user_id !== Auth::id(), 403);
 
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'kelas' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
             'tahun' => 'required|integer',
             'prestasi' => 'required|string|max:255',
             'tingkat' => 'required|string|max:255',
@@ -107,33 +119,25 @@ class SiswaController extends Controller
             'foto' => 'nullable|image|max:2048',
         ]);
 
-        $data = [
-            'nama' => $request->nama,
-            'kelas' => $request->kelas,
-            'tahun' => $request->tahun,
-            'prestasi' => $request->prestasi,
-            'tingkat' => $request->tingkat,
-        ];
-
         if ($request->hasFile('sertifikat')) {
             if ($siswa->sertifikat) {
                 Storage::disk('public')->delete($siswa->sertifikat);
             }
-            $data['sertifikat'] = $request->file('sertifikat')->store('sertifikat', 'public');
+            $validated['sertifikat'] = $request->file('sertifikat')->store('sertifikat', 'public');
         }
 
         if ($request->hasFile('foto')) {
             if ($siswa->foto) {
                 Storage::disk('public')->delete($siswa->foto);
             }
-            $data['foto'] = $request->file('foto')->store('foto', 'public');
+            $validated['foto'] = $request->file('foto')->store('foto', 'public');
         }
 
-        $siswa->update($data);
-
+        $siswa->update($validated);
 
         return redirect()->route('dashboard')->with('success', 'Data siswa berhasil diperbarui!');
     }
+
 
     public function destroy(string $id)
     {

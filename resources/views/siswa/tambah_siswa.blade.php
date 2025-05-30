@@ -36,12 +36,17 @@
                             </div>
 
                             <div class="form-control">
-                                <label class="label"><span class="label-text">Kelas</span></label>
-                                <select name="kelas" class="select select-bordered w-full" required>
+                                <label class="label"><span class="label-text">Jurusan</span></label>
+                                <select name="jurusan" class="select select-bordered w-full" required>
                                     <option disabled selected>Pilih</option>
-                                    @foreach (['X IPA 1','X IPA 2','XI IPA 1','XI IPA 2','XII IPA 1','XII IPA 2','X IPS 1','XI IPS 1','XII IPS 1'] as $kelas)
-                                        <option value="{{ $kelas }}">{{ $kelas }}</option>
-                                    @endforeach
+                                    @php
+                                        $daftar_jurusan = ['T. KIMIA INDUSTRI', 'KIMIA ANALISIS', 'T. INSTALASI TENAGA LISTRIK', 'T. FABRIKASI LOGAM DAN MANUFAKTUR', 'T. ELEKTRONIKA KOMUNIKASI', 'KONTRUKSI GEDUNG, SANITASI DAN PERAWATAN', 'T. SEPEDA MOTOR', 'T. KENDARAAN RINGAN', 'T. ALAT BERAT'];
+                                    @endphp
+                                    @foreach ($daftar_jurusan as $jurusan)
+                                    <option value="{{ $jurusan }}" {{ $siswa->jurusan == $jurusan ? 'selected' : '' }}>
+                                        {{ $jurusan }}
+                                    </option>
+                                @endforeach
                                 </select>
                             </div>
 
