@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-primary leading-tight">
+
             {{ __('Data Siswa Berprestasi') }}
         </h2>
     </x-slot>
@@ -117,6 +118,7 @@
                     </div>
                     <div class="mt-2">
                         {{ $siswas->links() }}
+
                     </div>
                 </div>
 
