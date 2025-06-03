@@ -29,5 +29,4 @@ class SiswaBerprestasi extends Model
         return $this->belongsTo(User::class);
     }
     
-
 }

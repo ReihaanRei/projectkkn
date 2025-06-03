@@ -44,6 +44,27 @@
         </div>
     </header>
     <div class="my-16">
+
+        <form method="GET" action="{{ route('home') }}" class="mb-6 w-full max-w-5xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Input pencarian -->
+                <input type="text" name="search" placeholder="Cari nama siswa"
+                    value="{{ request('search') }}" class="input input-bordered w-full" />
+
+                <!-- Select filter tingkat -->
+                <select name="filter_tingkat" class="select select-bordered w-full">
+                    <option value="">Semua Tingkat</option>
+                    @foreach (['Sekolah', 'Kecamatan', 'Kabupaten/Kota', 'Provinsi', 'Nasional', 'Internasional'] as $tingkat)
+                        <option value="{{ $tingkat }}" {{ request('tingkat') == $tingkat ? 'selected' : '' }}>
+                            {{ $tingkat }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <!-- Tombol cari -->
+                <button type="submit" class="btn btn-primary w-full">Cari</button>
+            </div>
+        </form>
         <x-table-prestasi-home :siswas="$siswas" />
     </div>
 

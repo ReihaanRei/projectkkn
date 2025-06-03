@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [SiswaController::class, 'home']);
+Route::get('/', [SiswaController::class, 'home'])->name('home');
 
 
 

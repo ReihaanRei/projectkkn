@@ -12,11 +12,10 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $query = Auth::user()->siswaBerprestasi()->orderBy('created_at', 'desc');
-        
+
         if ($request->filled('search')) {
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
-        
 
         if ($request->filled('filter_tingkat')) {
             $query->where('tingkat', $request->filter_tingkat);
@@ -28,22 +27,21 @@ class SiswaController extends Controller
     }
 
     public function home(Request $request)
-{
-    $query = SiswaBerprestasi::query();
+    {
+        $query = SiswaBerprestasi::query();
 
-    if ($request->filled('search')) {
-        $query->where('nama', 'like', '%' . $request->search . '%');
+        if ($request->filled('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('filter_tingkat')) {
+            $query->where('tingkat', $request->filter_tingkat);
+        }
+
+        $siswas = $query->paginate(10)->withQueryString();
+
+        return view('welcome', compact('siswas'));
     }
-
-    if ($request->filled('filter_tingkat')) {
-        $query->where('tingkat', $request->filter_tingkat);
-    }
-
-    $siswas = $query->paginate(10)->withQueryString();
-
-    return view('welcome', compact('siswas'));
-}
-
 
     public function create()
     {
@@ -66,28 +64,25 @@ class SiswaController extends Controller
             'foto' => 'nullable|image|max:2048',
         ]);
 
-        $fotoPath = $request->file('foto') 
-            ? $request->file('foto')->store('foto', 'public') 
-            : null;
+        $fotoPath = $request->file('foto') ? $request->file('foto')->store('foto', 'public') : null;
 
-        $sertifikatPath = $request->file('sertifikat') 
-            ? $request->file('sertifikat')->store('sertifikat', 'public') 
-            : null;
+        $sertifikatPath = $request->file('sertifikat') ? $request->file('sertifikat')->store('sertifikat', 'public') : null;
 
-
-        Auth::user()->siswaBerprestasi()->create([
-            'nama' => $request->nama,
-            'nis' => $request->nis,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'jurusan' => $request->jurusan,
-            'tahun' => $request->tahun,
-            'prestasi' => $request->prestasi,
-            'pencapaian' => $request->pencapaian,
-            'tingkat' => $request->tingkat,
-            'deskripsi' => $request->deskripsi,
-            'sertifikat' => $sertifikatPath,
-            'foto' => $fotoPath,
-        ]);
+        Auth::user()
+            ->siswaBerprestasi()
+            ->create([
+                'nama' => $request->nama,
+                'nis' => $request->nis,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'jurusan' => $request->jurusan,
+                'tahun' => $request->tahun,
+                'prestasi' => $request->prestasi,
+                'pencapaian' => $request->pencapaian,
+                'tingkat' => $request->tingkat,
+                'deskripsi' => $request->deskripsi,
+                'sertifikat' => $sertifikatPath,
+                'foto' => $fotoPath,
+            ]);
 
         return redirect()->route('dashboard')->with('success', 'Data siswa berhasil ditambahkan!');
     }
@@ -111,12 +106,16 @@ class SiswaController extends Controller
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'jurusan' => 'required|string|max:255',
-            'tahun' => 'required|integer',
-            'prestasi' => 'required|string|max:255',
-            'tingkat' => 'required|string|max:255',
-            'sertifikat' => 'nullable|file|mimes:pdf',
+            'nis' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:L,P',
+            'jurusan' => 'required|string',
             'foto' => 'nullable|image|max:2048',
+            'prestasi' => 'required|string|max:255',
+            'tingkat' => 'required|string',
+            'tahun' => 'required|integer|min:2000|max:2099',
+            'pencapaian' => 'required|string',
+            'deskripsi' => 'nullable|string',
+            'sertifikat' => 'nullable|mimes:pdf|max:5120',
         ]);
 
         if ($request->hasFile('sertifikat')) {
@@ -137,7 +136,6 @@ class SiswaController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Data siswa berhasil diperbarui!');
     }
-
 
     public function destroy(string $id)
     {

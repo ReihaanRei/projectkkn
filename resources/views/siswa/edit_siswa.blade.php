@@ -16,6 +16,17 @@
                         </div>
                     @endif
 
+                    @if ($errors->any())
+                        <div class="alert alert-error mb-4">
+                            <ul class="list-disc list-inside text-sm">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+
                     <form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -61,12 +72,23 @@
                                 <select id="jurusan" name="jurusan" required class="select select-bordered w-full">
                                     <option value="">Pilih jurusan</option>
                                     @php
-                                        $daftar_jurusan = ['T. KIMIA INDUSTRI', 'KIMIA ANALISIS', 'T. INSTALASI TENAGA LISTRIK', 'T. FABRIKASI LOGAM DAN MANUFAKTUR', 'T. ELEKTRONIKA KOMUNIKASI', 'KONTRUKSI GEDUNG, SANITASI DAN PERAWATAN', 'T. SEPEDA MOTOR', 'T. KENDARAAN RINGAN', 'T. ALAT BERAT'];
+                                        $daftar_jurusan = [
+                                            'T. KIMIA INDUSTRI',
+                                            'KIMIA ANALISIS',
+                                            'T. INSTALASI TENAGA LISTRIK',
+                                            'T. FABRIKASI LOGAM DAN MANUFAKTUR',
+                                            'T. ELEKTRONIKA KOMUNIKASI',
+                                            'KONTRUKSI GEDUNG, SANITASI DAN PERAWATAN',
+                                            'T. SEPEDA MOTOR',
+                                            'T. KENDARAAN RINGAN',
+                                            'T. ALAT BERAT',
+                                        ];
                                     @endphp
                                     @foreach ($daftar_jurusan as $jurusan)
-                                    <option value="{{ $jurusan }}" {{ $siswa->jurusan == $jurusan ? 'selected' : '' }}>
-                                        {{ $jurusan }}
-                                    </option>
+                                        <option value="{{ $jurusan }}"
+                                            {{ $siswa->jurusan == $jurusan ? 'selected' : '' }}>
+                                            {{ $jurusan }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -120,7 +142,7 @@
                                     <option value="">Pilih Tingkat Prestasi</option>
                                     @foreach (['Sekolah', 'Kecamatan', 'Kabupaten/Kota', 'Provinsi', 'Nasional', 'Internasional'] as $tingkat)
                                         <option value="{{ $tingkat }}"
-                                            {{ $siswa->tingkat == $tingkat ? 'selected' : '' }}>{{ $siswa->tingkat }}
+                                            {{ $siswa->tingkat == $tingkat ? 'selected' : '' }}>{{ $tingkat }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -204,4 +226,3 @@
         });
     </script>
 </x-app-layout>
-
