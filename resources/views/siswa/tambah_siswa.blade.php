@@ -36,9 +36,8 @@
                     @csrf
 
                     <div>
-                        <h3 class="text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-6">
-                            Data Pribadi Siswa
-                        </h3>
+                        <h3 class="card-title border-b pb-2 mb-6 font-semibold text-lg">Data Pribadi Siswa</h3>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Nama Lengkap</span></label>
@@ -96,9 +95,7 @@
 
                     <!-- Bagian: Data Prestasi -->
                     <div>
-                        <h3 class="text-xl mt-6 font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-6">
-                            Data Prestasi
-                        </h3>
+                        <h3 class="card-title border-b pb-2 mb-6 font-semibold text-lg">Data Prestasi</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Nama Prestasi</span></label>

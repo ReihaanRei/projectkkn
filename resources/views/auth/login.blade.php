@@ -2,39 +2,38 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
 
-        <!-- username -->
+        <!-- Username -->
         <div>
-            <x-input-label for="username" :value="__('username')" />
-            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required
-                autofocus autocomplete="username" />
+            <x-input-label for="username" :value="__('Username')" class="text-base-content" />
+            <x-text-input id="username" class="input input-bordered w-full mt-1 bg-base-100 text-base-content"
+                type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" />
-
+        <div>
+            <x-input-label for="password" :value="__('Password')" class="text-base-content" />
+            <x-text-input id="password" class="input input-bordered w-full mt-1 bg-base-100 text-base-content"
+                type="password" name="password" required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
+        <div class="block">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox"
-                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                <input id="remember_me" type="checkbox" name="remember"
+                    class="checkbox checkbox-primary checkbox-sm" />
+                <span class="ms-2 text-sm text-gray-600">{{ __('Ingat saya') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
+        <!-- Tombol -->
+        <div class="flex items-center justify-end">
+            <x-primary-button class="ms-3  bg-blue-600">
+                {{ __('Masuk') }}
             </x-primary-button>
         </div>
     </form>

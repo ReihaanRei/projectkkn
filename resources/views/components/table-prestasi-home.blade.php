@@ -1,11 +1,11 @@
 @props(['siswas'])
 
-<main class="w-full max-w-full bg-base-100 shadow-xl rounded-box px-8 md:px-6 py-6 mx-auto mt-6">
+<main class="w-full max-w-full bg-base-100 shadow-xl rounded-box px-8 md:px-6 py-6 mx-auto mt-6 text-base-content">
     <h2 class="text-xl font-semibold text-primary mb-6 text-center md:text-left">Data Siswa Berprestasi</h2>
 
     <div class="w-full overflow-x-auto rounded-lg">
         <table class="table table-zebra table-fixed w-max text-sm md:text-base">
-            <thead class="bg-base-200 text-gray-700 text-xs md:text-sm">
+            <thead class="bg-base-200 text-base-content text-xs md:text-sm">
                 <tr>
                     <th class="w-[40px] text-center">No</th>
                     <th class="w-[300px]">Nama Siswa</th>
@@ -15,7 +15,7 @@
             </thead>
             <tbody>
                 @forelse ($siswas as $index => $siswa)
-                    <tr>
+                    <tr class="hover:bg-base-300 text-base-content">
                         <td class="text-center">{{ $siswas->firstItem() + $index }}</td>
                         <td class="truncate">
                             <div class="flex items-center gap-4">
@@ -33,22 +33,24 @@
                         <td class="whitespace-nowrap truncate">{{ $siswa->jurusan }}</td>
                         <td class="truncate">
                             <div class="font-semibold truncate">{{ $siswa->prestasi }}</div>
-                            <div class="text-sm text-gray-500 whitespace-nowrap truncate">
+                            <div class="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap truncate">
                                 {{ $siswa->tingkat }} | {{ $siswa->tahun }}
                             </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="text-center italic text-gray-500">Tidak ada data siswa berprestasi.</td>
+                        <td colspan="4" class="text-center italic text-gray-500 dark:text-gray-400">
+                            Tidak ada data siswa berprestasi.
+                        </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 
-    <div class="mt-6 flex flex-col items-center justify-center">
-        <div class="text-sm text-gray-500 text-center">
+    <div class="mt-6 flex flex-col items-center justify-center text-base-content">
+        <div class="text-sm text-gray-500 dark:text-gray-400 text-center">
             Menampilkan <span class="font-medium">{{ $siswas->firstItem() ?? 0 }}</span> sampai
             <span class="font-medium">{{ $siswas->lastItem() ?? 0 }}</span> dari
             <span class="font-medium">{{ $siswas->total() }}</span> entri

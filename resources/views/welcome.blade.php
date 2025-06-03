@@ -17,7 +17,7 @@
     @endif
 </head>
 
-<body class="bg-gray-100 dark:bg-[#0a0a0a] text-[#1b1b18] flex flex-col items-center justify-start min-h-screen ">
+<body class="bg-gray-100 text-[#1b1b18] flex flex-col items-center justify-start min-h-screen ">
     <header class="w-full bg-blue-700 text-white shadow-md">
         <div class="max-w-full px-8 py-6 flex justify-between items-center">
             <div class="flex items-center gap-4">
@@ -48,11 +48,11 @@
         <form method="GET" action="{{ route('home') }}" class="mb-6 w-full max-w-5xl px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Input pencarian -->
-                <input type="text" name="search" placeholder="Cari nama siswa"
-                    value="{{ request('search') }}" class="input input-bordered w-full" />
+                <input type="text" name="search" placeholder="Cari nama siswa" value="{{ request('search') }}"
+                    class="input input-bordered w-full bg-base-200 text-base-content placeholder-base-content/50" />
 
                 <!-- Select filter tingkat -->
-                <select name="filter_tingkat" class="select select-bordered w-full">
+                <select name="filter_tingkat" class="select select-bordered w-full bg-base-200 text-base-content">
                     <option value="">Semua Tingkat</option>
                     @foreach (['Sekolah', 'Kecamatan', 'Kabupaten/Kota', 'Provinsi', 'Nasional', 'Internasional'] as $tingkat)
                         <option value="{{ $tingkat }}" {{ request('tingkat') == $tingkat ? 'selected' : '' }}>
@@ -65,6 +65,8 @@
                 <button type="submit" class="btn btn-primary w-full">Cari</button>
             </div>
         </form>
+
+
         <x-table-prestasi-home :siswas="$siswas" />
     </div>
 
